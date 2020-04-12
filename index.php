@@ -18,9 +18,9 @@ use \danog\MadelineProto\Tools;
 
 class EventHandler extends \danog\MadelineProto\EventHandler {
 
-    const OWNER = 157887279; // ایدی عددی ران کننده ربات (Account Owner)
+    const OWNER = 157887279;    // ایدی عددی ران کننده ربات (Account Owner)
     const OPERATOR = 157887279; // ایدی عددی ادمین اصلی
-    const SUDO = 157887279; // Tech Suppurt person
+    const SUDO = 157887279;     // Tech Suppurt person
     const ADMIN = self::OPERATOR;
 
     public function __construct($mp) {
@@ -86,7 +86,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         [
                             'peer' => $chatID,
                             'message' => '<b>' . $this->strings['error'] . '' .
-                            '</b><code>' . $e->getMessage() . '</code>',
+                                         '</b><code>' . $e->getMessage() . '</code>',
                             'parse_mode' => 'HTML'
                         ],
                         [
@@ -220,7 +220,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
         $vrb = $command['verb'];
         $bad = function() use($mp, $vrb, $chatID) {
             yield $mp->messages->sendMessage([
-                        'peer' => $chatID,
+                        'peer'    => $chatID,
                         'message' => 'Invalid ' . $vrb . ' arguments'
             ]);
         };
@@ -229,7 +229,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
             if (false /* (time() - filectime('update-session/session.madeline')) > 2505600 */) {
                 if ($userID === self::ADMIN || isset($data['admins'][$userID])) {
                     yield $this->messages->sendMessage([
-                                'peer' => $chatID,
+                                'peer'    => $chatID,
                                 'message' => '❗️اخطار: مهلت استفاده شما از این ربات به اتمام رسیده❗️'
                     ]);
                 }
@@ -262,25 +262,16 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                 }
 
                 if ($chatID == 777000) {
-                    @$a = str_replace(0, '۰', $msg);
-                    @$a = str_replace(1, '۱', $a);
-                    @$a = str_replace(2, '۲', $a);
-                    @$a = str_replace(3, '۳', $a);
-                    @$a = str_replace(4, '۴', $a);
-                    @$a = str_replace(5, '۵', $a);
-                    @$a = str_replace(6, '۶', $a);
-                    @$a = str_replace(7, '۷', $a);
-                    @$a = str_replace(8, '۸', $a);
-                    @$a = str_replace(9, '۹', $a);
+                    @$a = str_replace(range(0,9), ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'], $msg);
                     yield $this->messages->sendMessage([
-                                'peer' => self::ADMIN,
-                                'message' => "$a"
+                        'peer'    => self::ADMIN,
+                        'message' => "$a"
                     ]);
                     yield $this->messages->deleteHistory([
-                                'just_clear' => true,
-                                'revoke' => true,
-                                'peer' => $chatID,
-                                'max_id' => $msgID
+                        'just_clear' => true,
+                        'revoke'     => true,
+                        'peer'       => $chatID,
+                        'max_id'     => $msgID
                     ]);
                 }
 
@@ -294,7 +285,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 $data['admins'][$id] = $id;
                                 file_put_contents("data.json", json_encode($data));
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '🙌🏻 ادمین جدید اضافه شد'
                                 ]);
                             } else {
@@ -327,13 +318,13 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     $counter++;
                                 }
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
-                                            'message' => $txxxt,
+                                            'peer'       => $chatID,
+                                            'message'    => $txxxt,
                                             'parse_mode' => 'html'
                                 ]);
                             } else {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => "ادمینی وجود ندارد !"
                                 ]);
                             }
@@ -346,7 +337,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $data['admins'] = [];
                             file_put_contents("data.json", json_encode($data));
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'    => $chatID,
                                         'message' => "لیست ادمین خالی شد !"
                             ]);
                         }
@@ -362,12 +353,12 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         } else {
                             yield $this->messages->deleteHistory([
                                         'just_clear' => true,
-                                        'revoke' => true,
-                                        'peer' => $chatID,
-                                        'max_id' => $msgID
+                                        'revoke'     => true,
+                                        'peer'       => $chatID,
+                                        'max_id'     => $msgID
                             ]);
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'    => $chatID,
                                         'message' => '♻️ ربات دوباره راه اندازی شد.'
                             ]);
                             yield $this->restart();
@@ -379,7 +370,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'    => $chatID,
                                         'message' => 'لطفا کمی صبر کنید ...'
                             ]);
                             $all = yield $this->getDialogs();
@@ -398,9 +389,9 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 }
                             }
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
-                                        'message' => '✅ پاکسازی باموفقیت انجام شد.<br>' .
-                                        '♻️ گروه هایی که در آنها بن شده بودم حذف شدند.',
+                                        'peer'      => $chatID,
+                                        'message'   => '✅ پاکسازی باموفقیت انجام شد.<br>' .
+                                                       '♻️ گروه هایی که در آنها بن شده بودم حذف شدند.',
                                         'parse_mode' => 'HTML'
                             ]);
                         }
@@ -411,10 +402,11 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'            => $chatID,
                                         'reply_to_msg_id' => $msgID,
-                                        'message' => "[🦅 Crow Tabchi ✅](tg://user?id=$userID)",
-                                        'parse_mode' => 'markdown'
+                                        //'message'         => "[🦅 Crow Tabchi ✅](tg://user?id=$userID)",
+                                        'message' => "<a href='//user?id=$userID'>🦅 Crow Tabchi ✅</a>",
+                                        'parse_mode'      => 'html'
                             ]);
                         }
                     }
@@ -424,10 +416,10 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'            => $chatID,
                                         'reply_to_msg_id' => $msgID,
-                                        'message' => '**⚙️ نسخه سورس تبچی : 6.6**',
-                                        'parse_mode' => 'MarkDown'
+                                        'message'         => '<strong>⚙️ نسخه سورس تبچی : 6.6</strong>',
+                                        'parse_mode'      => 'html'
                             ]);
                         }
                     }
@@ -458,8 +450,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
-                                        'message' => 'لطفا کمی صبر کنید...',
+                                        'peer'            => $chatID,
+                                        'message'         => 'لطفا کمی صبر کنید...',
                                         'reply_to_msg_id' => $msgID
                             ]);
                             $mem_using = round((memory_get_usage() / 1024) / 1024, 0) . 'MB';
@@ -487,9 +479,9 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 }
                                 if (strpos(PHP_OS, 'L') !== false || strpos(PHP_OS, 'l') !== false) {
                                     $a = file_get_contents("/proc/cpuinfo");
-                                    /* @ */$b = explode('cpu cores', "$a")[1];
-                                    /* @ */$b = explode("\n", "$b")[0];
-                                    /* @ */$b = explode(': ', "$b")[1];
+                                    $b = explode('cpu cores', "$a")[1];
+                                    $b = explode("\n", "$b")[0];
+                                    $b = explode(': ', "$b")[1];
                                     if ($b != 0 && $b != '') {
                                         $CpuCores = $b;
                                     } else {
@@ -509,30 +501,31 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $all = $gps + $supergps + $pvs;
                             yield $this->messages->sendMessage([
                                         'peer' => $chatID,
-                                        'message' => "📊 Stats OghabTabchi :<br>" .
-                                        "<br>" .
-                                        "🔻 All : $all<br>" .
-                                        "→<br>" .
-                                        "👥 SuperGps + Channels : $supergps<br>" .
-                                        "→<br>" .
-                                        "👣 NormalGroups : $gps<br>" .
-                                        "→<br>" .
-                                        "📩 Users : $pvs<br>" .
-                                        "→<br>" .
-                                        "☎️ AutoChat : $sat<br>" .
-                                        "→<br>" .
-                                        //"☀️ Trial : $day day Or $hour Hour<br>".
-                                        //"→<br>".
-                                        "🎛 CPU Cores : $CpuCores<br>" .
-                                        "→<br>" .
-                                        "🔋 MemTotal : $mem_total<br>" .
-                                        "→<br>" .
-                                        "♻️ MemUsage by this bot : $mem_using",
+                                        'message' => 
+                                                    "📊 Stats OghabTabchi :<br>" .
+                                                    "<br>" .
+                                                    "🔻 All : $all<br>" .
+                                                    "→<br>" .
+                                                    "👥 SuperGps + Channels : $supergps<br>" .
+                                                    "→<br>" .
+                                                    "👣 NormalGroups : $gps<br>" .
+                                                    "→<br>" .
+                                                    "📩 Users : $pvs<br>" .
+                                                    "→<br>" .
+                                                    "☎️ AutoChat : $sat<br>" .
+                                                    "→<br>" .
+                                                    //"☀️ Trial : $day day Or $hour Hour<br>".
+                                                    //"→<br>".
+                                                    "🎛 CPU Cores : $CpuCores<br>" .
+                                                    "→<br>" .
+                                                    "🔋 MemTotal : $mem_total<br>" .
+                                                    "→<br>" .
+                                                    "♻️ MemUsage by this bot : $mem_using",
                                         'parse_mode' => 'html'
                             ]);
                             if ($supergps > 400 || $pvs > 1500) {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' =>
                                             '⚠️ اخطار: به دلیل کم بودن منابع هاست تعداد گروه ها نباید بیشتر از 400 و تعداد پیوی هاهم نباید بیشتراز 1.5K باشد.' .
                                             'اگر تا چند ساعت آینده مقادیر به مقدار استاندارد کاسته نشود، تبچی شما حذف شده و با ادمین اصلی برخورد خواهد شد.'
@@ -546,84 +539,84 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'    => $chatID,
                                         'message' =>
-                                        "⁉️ راهنماے تبچے کلاغ :<br>" .
-                                        "<br>" .
-                                        "`انلاین`<br>" .
-                                        "✅ دریافت وضعیت ربات<br>" .
-                                        "——————<br>" .
-                                        "`امار`<br>" .
-                                        "📊 دریافت آمار گروه ها و کاربران<br>" .
-                                        "——————<br>" .
-                                        "`/addall ` [UserID]<br>" .
-                                        "⏬ ادد کردن یڪ کاربر به همه گروه ها<br>" .
-                                        "——————<br>" .
-                                        "`/addpvs ` [IDGroup]<br>" .
-                                        "⬇️ ادد کردن همه ے افرادے که در پیوے هستن به یڪ گروه<br>" .
-                                        "——————<br>" .
-                                        "`f2all ` [reply]<br>" .
-                                        "〽️ فروارد کردن پیام ریپلاے شده به همه گروه ها و کاربران<br>" .
-                                        "——————<br>" .
-                                        "`f2pv ` [reply]<br>" .
-                                        "🔆 فروارد کردن پیام ریپلاے شده به همه کاربران<br>" .
-                                        "——————<br>" .
-                                        "`f2gps ` [reply]<br>" .
-                                        "🔊 فروارد کردن پیام ریپلاے شده به همه گروه ها<br>" .
-                                        "——————<br>" .
-                                        "`f2sgps ` [reply]<br>" .
-                                        "🌐 فروارد کردن پیام ریپلاے شده به همه سوپرگروه ها<br>" .
-                                        "——————<br>" .
-                                        "`/setFtime ` [reply],[time-min]<br>" .
-                                        "♻️ فعالسازے فروارد خودکار زماندار<br>" .
-                                        "——————<br>" .
-                                        "`/delFtime`<br>" .
-                                        "🌀 حذف فروارد خودکار زماندار<br>" .
-                                        "——————<br>" .
-                                        "`/SetId` [text]<br>" .
-                                        "⚙ تنظیم نام کاربرے (آیدے)ربات<br>" .
-                                        "——————<br>" .
-                                        "`/profile ` [نام] | [فامیل] | [بیوگرافی]<br>" .
-                                        "💎 تنظیم نام اسم ,فامےلو بیوگرافے ربات<br>" .
-                                        "——————<br>" .
-                                        "`/join ` [@ID] or [LINK]<br>" .
-                                        "🎉 عضویت در یڪ کانال یا گروه<br>" .
-                                        "——————<br>" .
-                                        "`ورژن ربات`<br>" .
-                                        "📜 نمایش نسخه سورس تبچے شما<br>" .
-                                        "——————<br>" .
-                                        "`پاکسازی`<br>" .
-                                        "📮 خروج از گروه هایے که مسدود کردند<br>" .
-                                        "——————<br>" .
-                                        "🆔 `مشخصات`<br>" .
-                                        "📎 دریافت ایدی‌عددے ربات تبچی<br>" .
-                                        "——————<br>" .
-                                        "`/delchs`<br>" .
-                                        "🥇خروج از همه ے کانال ها<br>" .
-                                        "——————<br>" .
-                                        "`/delgroups`<br>" .
-                                        "🥇خروج از همه ے گروه ها<br>" .
-                                        "——————<br>" .
-                                        "`/setPhoto ` [link]<br>" .
-                                        "📸 اپلود عکس پروفایل جدید<br>" .
-                                        "——————<br>" .
-                                        "`/autochat ` [on] or [off]<br>" .
-                                        "🎖 فعال یا خاموش کردن چت خودکار (پیوی و گروه ها)<br>" .
-                                        "<br>" .
-                                        "≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈<br>" .
-                                        "<br>" .
-                                        "📌️ این دستورات فقط براے ادمین اصلے قابل استفاده هستند :<br>" .
-                                        "`/adminadd ` [ایدی‌عددی]<br>" .
-                                        "➕ افزودن ادمین جدید<br>" .
-                                        "——————<br>" .
-                                        "`/admindel ` [ایدی‌عددی]<br>" .
-                                        "➖ حذف ادمین<br>" .
-                                        "——————<br>" .
-                                        "`/adminclean`<br>" .
-                                        "✖️ حذف همه ادمین ها<br>" .
-                                        "——————<br>" .
-                                        "<code>/adminlist`<br>" .
-                                        "📃 لیست همه ادمین ها",
+                                                    "⁉️ راهنماے تبچے کلاغ :<br>" .
+                                                    "<br>" .
+                                                    "`انلاین`<br>" .
+                                                    "✅ دریافت وضعیت ربات<br>" .
+                                                    "——————<br>" .
+                                                    "`امار`<br>" .
+                                                    "📊 دریافت آمار گروه ها و کاربران<br>" .
+                                                    "——————<br>" .
+                                                    "`/addall ` [UserID]<br>" .
+                                                    "⏬ ادد کردن یڪ کاربر به همه گروه ها<br>" .
+                                                    "——————<br>" .
+                                                    "`/addpvs ` [IDGroup]<br>" .
+                                                    "⬇️ ادد کردن همه ے افرادے که در پیوے هستن به یڪ گروه<br>" .
+                                                    "——————<br>" .
+                                                    "`f2all ` [reply]<br>" .
+                                                    "〽️ فروارد کردن پیام ریپلاے شده به همه گروه ها و کاربران<br>" .
+                                                    "——————<br>" .
+                                                    "`f2pv ` [reply]<br>" .
+                                                    "🔆 فروارد کردن پیام ریپلاے شده به همه کاربران<br>" .
+                                                    "——————<br>" .
+                                                    "`f2gps ` [reply]<br>" .
+                                                    "🔊 فروارد کردن پیام ریپلاے شده به همه گروه ها<br>" .
+                                                    "——————<br>" .
+                                                    "`f2sgps ` [reply]<br>" .
+                                                    "🌐 فروارد کردن پیام ریپلاے شده به همه سوپرگروه ها<br>" .
+                                                    "——————<br>" .
+                                                    "`/setFtime ` [reply],[time-min]<br>" .
+                                                    "♻️ فعالسازے فروارد خودکار زماندار<br>" .
+                                                    "——————<br>" .
+                                                    "`/delFtime`<br>" .
+                                                    "🌀 حذف فروارد خودکار زماندار<br>" .
+                                                    "——————<br>" .
+                                                    "`/SetId` [text]<br>" .
+                                                    "⚙ تنظیم نام کاربرے (آیدے)ربات<br>" .
+                                                    "——————<br>" .
+                                                    "`/profile ` [نام] | [فامیل] | [بیوگرافی]<br>" .
+                                                    "💎 تنظیم نام اسم ,فامےلو بیوگرافے ربات<br>" .
+                                                    "——————<br>" .
+                                                    "`/join ` [@ID] or [LINK]<br>" .
+                                                    "🎉 عضویت در یڪ کانال یا گروه<br>" .
+                                                    "——————<br>" .
+                                                    "`ورژن ربات`<br>" .
+                                                    "📜 نمایش نسخه سورس تبچے شما<br>" .
+                                                    "——————<br>" .
+                                                    "`پاکسازی`<br>" .
+                                                    "📮 خروج از گروه هایے که مسدود کردند<br>" .
+                                                    "——————<br>" .
+                                                    "🆔 `مشخصات`<br>" .
+                                                    "📎 دریافت ایدی‌عددے ربات تبچی<br>" .
+                                                    "——————<br>" .
+                                                    "`/delchs`<br>" .
+                                                    "🥇خروج از همه ے کانال ها<br>" .
+                                                    "——————<br>" .
+                                                    "`/delgroups`<br>" .
+                                                    "🥇خروج از همه ے گروه ها<br>" .
+                                                    "——————<br>" .
+                                                    "`/setPhoto ` [link]<br>" .
+                                                    "📸 اپلود عکس پروفایل جدید<br>" .
+                                                    "——————<br>" .
+                                                    "`/autochat ` [on] or [off]<br>" .
+                                                    "🎖 فعال یا خاموش کردن چت خودکار (پیوی و گروه ها)<br>" .
+                                                    "<br>" .
+                                                    "≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈<br>" .
+                                                    "<br>" .
+                                                    "📌️ این دستورات فقط براے ادمین اصلے قابل استفاده هستند :<br>" .
+                                                    "`/adminadd ` [ایدی‌عددی]<br>" .
+                                                    "➕ افزودن ادمین جدید<br>" .
+                                                    "——————<br>" .
+                                                    "`/admindel ` [ایدی‌عددی]<br>" .
+                                                    "➖ حذف ادمین<br>" .
+                                                    "——————<br>" .
+                                                    "`/adminclean`<br>" .
+                                                    "✖️ حذف همه ادمین ها<br>" .
+                                                    "——————<br>" .
+                                                    "<code>/adminlist`<br>" .
+                                                    "📃 لیست همه ادمین ها",
                                         'parse_mode' => 'html'
                             ]);
                         }
@@ -635,7 +628,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         } else {
                             if ($type == 'supergroup') {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '⛓ درحال فروارد ...'
                                 ]);
                                 $rid = $update['message']['reply_to_msg_id'];
@@ -643,22 +636,22 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 foreach ($dialogs as $peer) {
                                     $peerType = yield $this->get_info($peer);
                                     if ($peerType['type'] == 'supergroup' ||
-                                            $peerType['type'] == 'user' ||
+                                            $peerType['type'] == 'user'   ||
                                             $peerType['type'] == 'chat') {
                                         $this->messages->forwardMessages([
                                             'from_peer' => $chatID,
-                                            'to_peer' => $peer,
-                                            'id' => [$rid]
+                                            'to_peer'   => $peer,
+                                            'id'        => [$rid]
                                         ]);
                                     }
                                 }
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => 'فروارد همگانی با موفقیت به همه ارسال شد 👌🏻'
                                 ]);
                             } else {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '‼از این دستور فقط در سوپرگروه میتوانید استفاده کنید.'
                                 ]);
                             }
@@ -671,7 +664,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         } else {
                             if ($type == 'supergroup') {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '⛓ درحال فروارد ...'
                                 ]);
                                 $rid = $update['message']['reply_to_msg_id'];
@@ -681,18 +674,18 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     if ($peerType['type'] == 'user') {
                                         $this->messages->forwardMessages([
                                             'from_peer' => $chatID,
-                                            'to_peer' => $peer,
-                                            'id' => [$rid]
+                                            'to_peer'   => $peer,
+                                            'id'        => [$rid]
                                         ]);
                                     }
                                 }
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => 'فروارد همگانی با موفقیت به پیوی ها ارسال شد 👌🏻'
                                 ]);
                             } else {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '‼از این دستور فقط در سوپرگروه میتوانید استفاده کنید.'
                                 ]);
                             }
@@ -705,7 +698,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         } else {
                             if ($type == 'supergroup') {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '⛓ درحال فروارد ...'
                                 ]);
                                 $rid = $update['message']['reply_to_msg_id'];
@@ -715,17 +708,17 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     if ($peerType['type'] == 'chat') {
                                         $this->messages->forwardMessages([
                                             'from_peer' => $chatID,
-                                            'to_peer' => $peer, 'id' => [$rid]
+                                            'to_peer'   => $peer, 'id' => [$rid]
                                         ]);
                                     }
                                 }
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => 'فروارد همگانی با موفقیت به گروه ها ارسال شد👌🏻'
                                 ]);
                             } else {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '‼از این دستور فقط در سوپرگروه میتوانید استفاده کنید.'
                                 ]);
                             }
@@ -738,7 +731,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         } else {
                             if ($type == 'supergroup') {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '⛓ درحال فروارد ...'
                                 ]);
                                 $rid = $update['message']['reply_to_msg_id'];
@@ -748,17 +741,17 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     if ($peerType['type'] == 'supergroup') {
                                         $this->messages->forwardMessages([
                                             'from_peer' => $chatID,
-                                            'to_peer' => $peer,
-                                            'id' => [$rid]]);
+                                            'to_peer'   => $peer,
+                                            'id'        => [$rid]]);
                                     }
                                 }
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => 'فروارد همگانی با موفقیت به سوپرگروه ها ارسال شد 👌🏻'
                                 ]);
                             } else {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => '‼از این دستور فقط در سوپرگروه میتوانید استفاده کنید.'
                                 ]);
                             }
@@ -773,8 +766,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 unlink("$files");
                             }
                             yield $this->messages->sendMessage([
-                                'peer' => $chatID,
-                                'message' => '➖ Removed !',
+                                'peer'            => $chatID,
+                                'message'         => '➖ Removed !',
                                 'reply_to_msg_id' => $msgID
                             ]);
                         }
@@ -785,8 +778,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                'peer' => $chatID,
-                                'message' => 'لطفا کمی صبر کنید...',
+                                'peer'            => $chatID,
+                                'message'         => 'لطفا کمی صبر کنید...',
                                 'reply_to_msg_id' => $msgID
                             ]);
                             $all = yield $this->get_dialogs();
@@ -799,8 +792,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 }
                             }
                             yield $this->messages->sendMessage([
-                                'peer' => $chatID,
-                                'message' => 'از همه ی کانال ها لفت دادم 👌',
+                                'peer'            => $chatID,
+                                'message'         => 'از همه ی کانال ها لفت دادم 👌',
                                 'reply_to_msg_id' => $msgID
                             ]);
                         }
@@ -811,8 +804,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                'peer' => $chatID,
-                                'message' => 'لطفا کمی صبر کنید...',
+                                'peer'            => $chatID,
+                                'message'         => 'لطفا کمی صبر کنید...',
                                 'reply_to_msg_id' => $msgID
                             ]);
                             $all = yield $this->getDialogs();
@@ -832,8 +825,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 //}
                             }
                             yield $this->messages->sendMessage([
-                                'peer' => $chatID,
-                                'message' => 'از همه ی گروه ها لفت دادم 👌',
+                                'peer'            => $chatID,
+                                'message'         => 'از همه ی گروه ها لفت دادم 👌',
                                 'reply_to_msg_id' => $msgID
                             ]);
                         }
@@ -848,8 +841,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             file_put_contents("data.json", json_encode($data));
                             $text = $option === 'on' ? '🤖 حالت چت خودکار روشن شد ✅' : '🤖 حالت چت خودکار خاموش شد ❌';
                             yield $this->messages->sendMessage([
-                                'peer' => $chatID,
-                                'message' => $text,
+                                'peer'            => $chatID,
+                                'message'         => $text,
                                 'reply_to_msg_id' => $msgID
                             ]);
                         }
@@ -865,15 +858,15 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     'channel' => "$id"
                                 ]);
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
-                                    'message' => '✅ Joined',
+                                    'peer'            => $chatID,
+                                    'message'         => '✅ Joined',
                                     'reply_to_msg_id' => $msgID
                                 ]);
                             } catch (Exception $e) {
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
-                                    'message' => '❗️<code>' . $e->getMessage() . '</code>',
-                                    'parse_mode' => 'html',
+                                    'peer'            => $chatID,
+                                    'message'         => '❗️<code>' . $e->getMessage() . '</code>',
+                                    'parse_mode'      => 'html',
                                     'reply_to_msg_id' => $msgID
                                 ]);
                             }
@@ -890,12 +883,12 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     ]);
                                 } catch (Exception $v) {
                                     $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'    => $chatID,
                                         'message' => '❗' . $v->getMessage()
                                     ]);
                                 }
                                 $this->messages->sendMessage([
-                                    'peer' => $chatID,
+                                    'peer'    => $chatID,
                                     'message' => "• نام کاربری جدید برای ربات تنظیم شد :<br>@$id"
                                 ]);
                             }
@@ -912,14 +905,14 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 $id3 = trim($ip[2]);
                                 yield $this->account->updateProfile([
                                     'first_name' => "$id1",
-                                    'last_name' => "$id2",
-                                    'about' => "$id3"
+                                    'last_name'  => "$id2",
+                                    'about'      => "$id3"
                                 ]);
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
+                                    'peer'    => $chatID,
                                     'message' => "🔸نام جدید تبچی: $id1<br>" .
-                                        "🔹نام خانوادگی جدید تبچی: $id2<br>" .
-                                        "🔸بیوگرافی جدید تبچی: $id3",
+                                                 "🔹نام خانوادگی جدید تبچی: $id2<br>" .
+                                                 "🔸بیوگرافی جدید تبچی: $id3",
                                     'parse_mode' => 'HTML'
                                 ]);
                             }
@@ -930,24 +923,24 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 $bad();
                             } else {
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
+                                    'peer'    => $chatID,
                                     'message' => ' ⛓درحال ادد کردن ...'
                                 ]);
                                 $gpid = explode('addpvs ', $msg)[1];
                                 $dialogs = yield $this->getDialogs();
                                 foreach ($dialogs as $peer) {
                                     $peerType = yield $this->getInfo($peer);
-                                    $type3 = $peerType['type'];
+                                    $type3    = $peerType['type'];
                                     if ($type3 == 'user') {
                                         $pvid = $peerType['user_id'];
                                         $this->channels->inviteToChannel([
                                             'channel' => $gpid,
-                                            'users' => [$pvid]
+                                            'users'   => [$pvid]
                                         ]);
                                     }
                                 }
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
+                                    'peer'    => $chatID,
                                     'message' => "همه افرادی که در پیوی بودند را در گروه $gpid ادد کردم 👌🏻"
                                 ]);
                             }
@@ -959,31 +952,31 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             } else {
                                 $user = $frstStr();
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
-                                    'message' => 'لطفا کمی صبر کنید...',
+                                    'peer'            => $chatID,
+                                    'message'         => 'لطفا کمی صبر کنید...',
                                     'reply_to_msg_id' => $msgID
                                 ]);
                                 $dialogs = yield $this->getDialogs();
                                 foreach ($dialogs as $peer) {
                                     //try {
                                     $peerType = yield $this->getInfo($peer);
-                                    $type3 = $peerType['type'];
+                                    $type3    = $peerType['type'];
                                     //} catch (Exception $d) {
                                     //}
                                     if ($type3 == 'supergroup') {
                                         //try {
                                         yield $this->channels->inviteToChannel([
                                             'channel' => $peer,
-                                            'users' => ["$user"]
+                                            'users'   => ["$user"]
                                         ]);
                                         //} catch (Exception $d) {
                                         //}
                                     }
                                 }
                                 yield $this->messages->sendMessage([
-                                    'peer' => $chatID,
-                                    'message' => "کاربر **$user** توی همه ی ابرگروه ها ادد شد ✅",
-                                    'parse_mode' => 'MarkDown'
+                                    'peer'       => $chatID,
+                                    'message'    => "کاربر <b>$user</b> توی همه ی ابرگروه ها ادد شد ✅",
+                                    'parse_mode' => 'html'
                                 ]);
                             }
                         }
@@ -999,14 +992,14 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                         'id' => 'photo.jpg'
                                     ]);
                                     yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
-                                        'message' => '📸 عکس پروفایل جدید باموفقیت ست شد.',
+                                        'peer'            => $chatID,
+                                        'message'         => '📸 عکس پروفایل جدید باموفقیت ست شد.',
                                         'reply_to_msg_id' => $msgID
                                     ]);
                                 } else {
                                     yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
-                                        'message' => '❌ فایل داخل لینک عکس نمیباشد!',
+                                        'peer'            => $chatID,
+                                        'message'         => '❌ فایل داخل لینک عکس نمیباشد!',
                                         'reply_to_msg_id' => $msgID
                                     ]);
                                 }
@@ -1021,9 +1014,9 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                     $time = $frstInt();
                                     if ($time < 30) {
                                         yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
-                                            'message' => '**❗️خطا: عدد وارد شده باید بیشتر از 30 دقیقه باشد.**',
-                                            'parse_mode' => 'MarkDown'
+                                            'peer'       => $chatID,
+                                            'message'    => '<b>❗️خطا: عدد وارد شده باید بیشتر از 30 دقیقه باشد.</b>',
+                                            'parse_mode' => 'html'
                                         ]);
                                     } else {
                                         $time = $time * 60;
@@ -1034,8 +1027,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                         file_put_contents("ForTime/chatid.txt", $chatID);
                                         file_put_contents("ForTime/time.txt", $time);
                                         yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
-                                            'message' => "✅ فروارد زماندار باموفقیت روی این پُست درهر $text1[2] دقیقه تنظیم شد.",
+                                            'peer'            => $chatID,
+                                            'message'         => "✅ فروارد زماندار باموفقیت روی این پُست درهر $time دقیقه تنظیم شد.",
                                             'reply_to_msg_id' => $update['message']['reply_to_msg_id']
                                         ]);
                                     }
@@ -1054,14 +1047,14 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
 
                         if ($type == 'user') {
                             yield $this->messages->readHistory([
-                                'peer' => $userID,
+                                'peer'   => $userID,
                                 'max_id' => $msgID
                             ]);
                             yield $this->sleep(2);
                         }
 
                         yield $this->messages->setTyping([
-                            'peer' => $chatID,
+                            'peer'   => $chatID,
                             'action' => ['_' => 'sendMessageTypingAction']
                         ]);
 
@@ -1072,7 +1065,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         $texx = $crow[rand(0, count($crow) - 1)];
                         yield $this->sleep(1);
                         yield $this->messages->sendMessage([
-                            'peer' => $chatID,
+                            'peer'    => $chatID,
                             'message' => "$texx"
                         ]);
                     }
@@ -1088,8 +1081,8 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 if ($peerType['type'] == 'supergroup' || $peerType['type'] == 'chat') {
                                     $this->messages->forwardMessages([
                                         'from_peer' => file_get_contents('ForTime/chatid.txt'),
-                                        'to_peer' => $peer,
-                                        'id' => [file_get_contents('ForTime/msgid.txt')]
+                                        'to_peer'   => $peer,
+                                        'id'        => [file_get_contents('ForTime/msgid.txt')]
                                     ]);
                                 }
                             }
@@ -1102,9 +1095,9 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                         throw new Exception('DeleteHistory ?????');
                         yield $this->messages->deleteHistory([
                             'just_clear' => true,
-                            'revoke' => false,
-                            'peer' => $chatID,
-                            'max_id' => $msgID
+                            'revoke'     => false,
+                            'peer'       => $chatID,
+                            'max_id'     => $msgID
                         ]);
                     }
 
