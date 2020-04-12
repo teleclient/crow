@@ -2,6 +2,7 @@
 
 // C * R * O * W  Also Known As: O * G * H * A * B
 // نیاز به کرونجاب 1 دقیقه ای
+// Safa Test
 
 if (!file_exists('data.json')) {
     file_put_contents('data.json', '{"autochat":{"on":"on"},"admins":{}}');
