@@ -12,20 +12,19 @@ function parseMsg($msg) {
     if($msg) {
         $msg    = ltrim($msg);
         $prefix = substr($msg, 0, 1);
-        if(strlen($msg) > 1 && in_array($prefix, ['!', '@', '/'])) {
-            $space = strpos($msg, ' ')?? 0;
-            $verb = strtolower(substr(rtrim($msg), 1, ($space === 0? strlen($msg) : $space) - 1));
-            $verb = strtolower($verb);
-            if(ctype_alnum($verb)) {
-                $command['pref']  = $prefix;
-                $command['verb']  = $verb;
-                $tokens = explode(' ', trim($msg));
-                $command['count'] = count($tokens) - 1;
-                for($i = 1; $i < count($tokens); $i++) {
-                    $command['params'][$i - 1] = trim($tokens[$i]);
+        if(in_array($prefix, ['!', '@', '/'])) {
+            $command['pref']  = $prefix;
+            if(strlen($msg) > 1) {
+                $verb = strtolower(substr(rtrim($msg), 1, strpos($msg.' ', ' ') - 1));
+                if(ctype_alnum($verb)) {
+                    $tokens = explode(' ', trim($msg));
+                    $command['verb']  = $verb;
+                    $command['count'] = count($tokens) - 1;
+                    for($i = 1; $i < count($tokens); $i++) {
+                        $command['params'][$i - 1] = trim($tokens[$i]);
+                    }
                 }
             }
-            return $command;
         }
     }
     return $command;
@@ -36,6 +35,8 @@ function parse($msg) {
     $command = parseMsg($msg);
     echo(toJSON($command).PHP_EOL.PHP_EOL);
 }
+
+
 
 parse('/');
 parse('/ping');
