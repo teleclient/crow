@@ -1,0 +1,47 @@
+
+
+"status" ✅Getting the robots status.
+
+"stats" 📊Getting the statistics of users and groups.
+
+addall: ⏬Addings a user to all the groups
+
+addpvs: ⬇️Adding all the users in all the PVs to a group
+
+f2all: 〽️Forwarding the replied-to message to all the groups and users
+
+f2pv: 🔆Forwarding the replied-to message to all the users.
+
+f2gps: 🔊Forwarding the replied to message to all of the groups.
+
+f2sgps: 🌐Forwardig the replied to message to of the supergroups.
+
+setFtime: ♻️Setting a time for autimatic forwarding of a message.
+
+delFtime 🌀Cancel forwarding a scheduled message.
+
+SetId: ⚙Set a new username for the account holder.
+
+profile: 💎Setting the first-name, last-name, and the bio of the account.
+
+join: 🎉Joining the account to a channel or a group.
+
+version: 📜Displaying the userbot's version.
+
+cleanup: 📮Leaving the groups that blocked the userbot.
+
+id: 🆔Getting the userbot's numberic id.
+
+delchs: 🥇Leaving all the groups the userbot is a member of.
+
+setPhoto: 📸setting the profile picture of the userbot.
+
+autochat: 🎖Start/stop the automated chat in PVs and groups.
+
+adminadd: ➕Add an user as an assistant.
+
+admindel: ➖Remove an assistant!
+
+adminclean: ✖️Remove all the assistants.
+
+adminlist: 📃List all of the admins.

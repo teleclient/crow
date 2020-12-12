@@ -296,7 +296,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                                 ]);
                             } else {
                                 yield $this->messages->sendMessage([
-                                            'peer' => $chatID,
+                                            'peer'    => $chatID,
                                             'message' => "این شخص از قبل ادمین بود :/"
                                 ]);
                             }
@@ -307,7 +307,7 @@ class EventHandler extends \danog\MadelineProto\EventHandler {
                             $bad();
                         } else {
                             yield $this->messages->sendMessage([
-                                        'peer' => $chatID,
+                                        'peer'    => $chatID,
                                         'message' => "Not implemented yet!"
                             ]);
                         }
